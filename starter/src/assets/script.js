@@ -1,3 +1,5 @@
+/* Declare an empty array named products to hold the items available in the store */
+
 const products = [];
 
 /* Create 3 or more product objects using object literal notation 
@@ -12,9 +14,9 @@ const products = [];
 products.push(
 	{
 	name: "cherry",
-	price: 2.00,
+	price: 1.00,
 	quantity: 0,
-	productId: 1,
+	productId: 101,
 	image: "/images/cherry.jpg"
 	},
 
@@ -22,15 +24,15 @@ products.push(
 	name: "orange",
 	price: 2.00,
 	quantity: 0,
-	productId: 2,
+	productId: 102,
 	image: "/images/orange.jpg"
 	},
 
 	{
 	name: "strawberry",
-	price: 2.00,
+	price: 3.00,
 	quantity: 0,
-	productId: 3,
+	productId: 103,
 	image: "/images/strawberry.jpg"
 	},
 );
@@ -53,13 +55,12 @@ const cart = [];
 
 function addProductToCart (productId) {
 	if(cart.find(fruit => fruit.productId === productId)) {
-		//  set the quantity ++
 		increaseQuantity(productId);
 	} else {
 		// Add the product to the cart and set increase quantity
 		cart.push(products.find(product => product.productId === productId));
 		increaseQuantity(productId);
-	}	
+	}
 };
 
 /* Create a function named increaseQuantity that takes in the productId as an argument
