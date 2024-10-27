@@ -51,10 +51,15 @@ function drawCheckout() {
 
     // run cartTotal() from script.js
     let cartSum = cartTotal();
+    let remBal = getRemainingBalance();
 
     let div = document.createElement('div');
-    div.innerHTML = `<p>Cart Total: ${currencySymbol}${cartSum}`;
+    div.innerHTML = `<p>Cart Total: ${currencySymbol}${cartSum}</p>`;
+		// added remaining balance to carry over to future transactions
+    let div2 = document.createElement('div');
+    div2.innerHTML = `<p>Previous Balance: ${currencySymbol}${remBal}</p>`;
     checkout.append(div);
+    checkout.append(div2);
 }
 
 // Initialize store with products, cart, and checkout
@@ -110,7 +115,17 @@ document.querySelector('.pay').addEventListener('click', (e) => {
     amount *= 1;
 
     // Set cashReturn to return value of pay()
-    let cashReturn = pay(amount);
+    // let cashReturn = pay(amount);
+
+    // Changed this to use payUsingRB()
+    let cashReturn = payUsingRB(amount);
+
+    // Also, clear cart and redraw
+    // This transaction is over, but balance remains and will be 
+    // added to future transactions
+    emptyCart();
+    drawCart();
+		drawCheckout();
 
     let paymentSummary = document.querySelector('.pay-summary');
     let div = document.createElement('div');
@@ -139,53 +154,53 @@ document.querySelector('.pay').addEventListener('click', (e) => {
 
 /* Standout suggestions */
 /* Begin remove all items from cart */
-// function dropCart(){
-//     let shoppingCart = document.querySelector('.empty-btn');
-//     let div = document.createElement("button");
-//     div.classList.add("empty");
-//     div.innerHTML =`Empty Cart`;
-//     shoppingCart.append(div);
-// }
-// dropCart();
+function dropCart(){
+    let shoppingCart = document.querySelector('.empty-btn');
+    let div = document.createElement("button");
+    div.classList.add("empty");
+    div.innerHTML =`Empty Cart`;
+    shoppingCart.append(div);
+}
+dropCart();
 
-// document.querySelector('.empty-btn').addEventListener('click', (e) => {
-//     if (e.target.classList.contains('empty')){
-//         emptyCart();
-//         drawCart();
-//         drawCheckout();
-//     }
-// })
+document.querySelector('.empty-btn').addEventListener('click', (e) => {
+    if (e.target.classList.contains('empty')){
+        emptyCart();
+        drawCart();
+        drawCheckout();
+    }
+})
 /* End all items from cart */
 
 /* Begin currency converter */
-// function currencyBuilder(){
-//     let currencyPicker = document.querySelector('.currency-selector');
-//     let select = document.createElement("select");
-//     select.classList.add("currency-select");
-//     select.innerHTML = `<option value="USD">USD</option>
-//                         <option value="EUR">EUR</option>
-//                         <option value="YEN">YEN</option>`;
-//     currencyPicker.append(select);
-// }
-// currencyBuilder();
+function currencyBuilder(){
+    let currencyPicker = document.querySelector('.currency-selector');
+    let select = document.createElement("select");
+    select.classList.add("currency-select");
+    select.innerHTML = `<option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="YEN">YEN</option>`;
+    currencyPicker.append(select);
+}
+currencyBuilder();
 
-// document.querySelector('.currency-select').addEventListener('change', function handleChange(event) {
-//     switch(event.target.value){
-//         case 'EUR':
-//             currencySymbol = '€';
-//             break;
-//         case 'YEN':
-//             currencySymbol = '¥';
-//             break;
-//         default:
-//             currencySymbol = '$';
-//             break;
-//      }
+document.querySelector('.currency-select').addEventListener('change', function handleChange(event) {
+    switch(event.target.value){
+        case 'EUR':
+            currencySymbol = '€';
+            break;
+        case 'YEN':
+            currencySymbol = '¥';
+            break;
+        default:
+            currencySymbol = '$';
+            break;
+     }
 
-//     currency(event.target.value);
-//     drawProducts();
-//     drawCart();
-//     drawCheckout();
-// });
+    currency(event.target.value);
+    drawProducts();
+    drawCart();
+    drawCheckout();
+});
 /* End currency converter */
 /* End standout suggestions */
