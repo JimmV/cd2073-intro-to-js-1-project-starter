@@ -51,14 +51,14 @@ function drawCheckout() {
 
     // run cartTotal() from script.js
     let cartSum = cartTotal();
-    let remBal = getRemainingBalance();
-
     let div = document.createElement('div');
     div.innerHTML = `<p>Cart Total: ${currencySymbol}${cartSum}</p>`;
-		// added remaining balance to carry over to future transactions
+    checkout.append(div);
+
+    // added remaining balance to carry over to future transactions
+    let remBal = getRemainingBalance();
     let div2 = document.createElement('div');
     div2.innerHTML = `<p>Previous Balance: ${currencySymbol}${remBal}</p>`;
-    checkout.append(div);
     checkout.append(div2);
 }
 
@@ -125,7 +125,7 @@ document.querySelector('.pay').addEventListener('click', (e) => {
     // added to future transactions
     emptyCart();
     drawCart();
-		drawCheckout();
+    drawCheckout(); // redraw checkout to work better with previous balance
 
     let paymentSummary = document.querySelector('.pay-summary');
     let div = document.createElement('div');

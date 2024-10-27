@@ -1,7 +1,5 @@
 /* Declare an empty array named products to hold the items available in the store */
-
 const products = [];
-// const basePrices = [];
 
 /* Create 3 or more product objects using object literal notation 
    Each product should include five properties
@@ -38,11 +36,6 @@ products.push(
 	},
 );
 
-// Base prices for each item in $ for easy conversion to other currencies
-// products.forEach(fruit => {
-// 	basePrices.push(fruit.price);
-// });
-
 /* Images provided in /images folder. All images from Unsplash.com
    - cherry.jpg by Mae Mu
    - orange.jpg by Mae Mu
@@ -77,7 +70,6 @@ function addProductToCart (productId) {
 
 function increaseQuantity (productId) {
 	cart.find(fruit => fruit.productId === productId).quantity++;
-	console.log('the current remainingBalance: ' + remainingBalance);
 }
 
 /* Create a function named decreaseQuantity that takes in the productId as an argument
@@ -121,7 +113,6 @@ function cartTotal () {
 }
 
 /* Create a function called emptyCart that empties the products from the cart */
-
 function emptyCart () {
 	cart.forEach(fruit => { // set all quantities to 0 before removing
 		fruit.quantity = 0;
@@ -155,7 +146,6 @@ function payUsingRB (amount) {
 
 
 /* Place stand out suggestions here (stand out suggestions can be found at the bottom of the project rubric.)*/
-
 function roundTo(num, precision) {
   const factor = Math.pow(10, precision);
   return Math.round(num * factor) / factor;
@@ -176,11 +166,6 @@ function currency (currency_new) {
 			break;
 	}
 
-	// convert each product.price to new currency
-// 	products.forEach((fruit, index) => {
-// 		fruit.price = (basePrices[index] * currencyFactor_new).toFixed(2);
-// 	});
-
 	products.forEach((fruit) => {
 		fruit.price = roundTo((fruit.price / currencyFactor_old * currencyFactor_new), 2);
 	});
@@ -190,7 +175,6 @@ function currency (currency_new) {
 
 	// Save the new currencyFactor in the global variable
 	currencyFactor_old = currencyFactor_new;
-
 }
 
 /* The following is for running unit tests. 
