@@ -52,16 +52,23 @@ const cart = [];
   - if the product is not already in the cart, add it to the cart
 */
 
+// Helper function for finding product by id
+function getProductById(id, list) {
+	return list.find(product => product.productId === id);
+}
+
 function addProductToCart (productId) {
-	if(cart.find(fruit => fruit.productId === productId)) {
+	// if(cart.find(fruit => fruit.productId === productId)) {
+	if(getProductById(productId, cart)) {
 		// Increase quantity only if item is found in cart
 		increaseQuantity(productId);
 	} else {
 		// Add the product to the cart and set increase quantity if not found
-		cart.push(products.find(product => product.productId === productId));
+		// cart.push(products.find(product => product.productId === productId));
+		cart.push(getProductById(productId, products));
 		increaseQuantity(productId);
 	}
-};
+}
 
 /* Create a function named increaseQuantity that takes in the productId as an argument
   - increaseQuantity should get the correct product based on the productId
@@ -69,7 +76,8 @@ function addProductToCart (productId) {
 */
 
 function increaseQuantity (productId) {
-	cart.find(fruit => fruit.productId === productId).quantity++;
+	// cart.find(fruit => fruit.productId === productId).quantity++;
+	getProductById(productId, cart).quantity++;
 }
 
 /* Create a function named decreaseQuantity that takes in the productId as an argument
@@ -78,8 +86,11 @@ function increaseQuantity (productId) {
   - if the function decreases the quantity to 0, the product is removed from the cart
 */
 
+// Function for decreasing the quantity of item in the cart
 function decreaseQuantity (productId) {
-	const item = cart.find(fruit => fruit.productId === productId);
+	// get the item and decrease its quantity
+	// const item = cart.find(fruit => fruit.productId === productId);
+	const item = getProductById(productId, cart);
 	item.quantity--;
 	if(item.quantity === 0) { // if quantity === 0, remove item from cart
 		removeProductFromCart(productId);
@@ -92,9 +103,12 @@ function decreaseQuantity (productId) {
   - removeProductFromCart should remove the product from the cart
 */
 
+// Function for removing a product from the cart
 function removeProductFromCart (productId) {
+	// get the index of the item and set it's quantitiy to 0
 	const index = cart.findIndex(fruit => fruit.productId === productId);
 	cart[index].quantity = 0;
+	// then remove it from the cart
 	cart.splice(index, 1);
 }
 
@@ -106,6 +120,7 @@ function removeProductFromCart (productId) {
 
 function cartTotal () {
 	let total = 0;
+	// traverse the cart array and sum each item quantity by it's price
 	cart.forEach(fruit => {
 		total += fruit.price * fruit.quantity;
 	});
@@ -117,6 +132,7 @@ function emptyCart () {
 	cart.forEach(fruit => { // set all quantities to 0 before removing
 		fruit.quantity = 0;
 	});
+	// remove all items from cart
 	cart.splice(0);
 }
 
@@ -128,17 +144,24 @@ function emptyCart () {
 */
 
 // This function is for running the test: does not use remainingBalance
+let totalPaid = 0;
 function pay (amount) {
-	return roundTo(amount - cartTotal(), 2);
+	totalPaid =  roundTo(amount - cartTotal(), 2);
+	return totalPaid;
 }
 
-// This function is for running on the site: uses remainingBalance 
-// The remainingBalance stays on account for future transactions
+// global variable for holding the reamining balance beteween transactions
 let remainingBalance = 0;
+
+// Getter method for accessing the remaining balance
+// This method IS used in the modified webpage
 function getRemainingBalance() {
 	return remainingBalance;
 }
 
+// This function is for running on the site: uses remainingBalance 
+// The remainingBalance stays on account for future transactions
+// This function IS  used in the modified web page
 function payUsingRB (amount) {
 	remainingBalance = roundTo((cartTotal() + remainingBalance) - amount, 2);
 	return -remainingBalance;
@@ -195,5 +218,6 @@ module.exports = {
 	emptyCart,
 	/* Uncomment the following line if completing the currency converter bonus */
 	currency,
-	remainingBalance
+	payUsingRB,
+	getRemainingBalance
 }
